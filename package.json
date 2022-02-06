@@ -12,6 +12,10 @@
     "gh-deploy": "npm run gh-predeploy && gh-pages -d out --dotfiles"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.3.1",
+    "@mui/material": "^5.4.0",
     "classnames": "^2.3.1",
     "next": "^12.0.10",
     "next-pwa": "^5.4.4",

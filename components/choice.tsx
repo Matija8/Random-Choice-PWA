@@ -1,8 +1,18 @@
 import { CSSProperties, ReactNode, useState } from 'react';
+import { Button } from 'components/button';
+import { TextField } from 'components/textField';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
 
 const choicePlaceholderText = 'No choice yet made!';
 const getInitialOptions = () => ['', ''];
 const colFlex: CSSProperties = { display: 'flex', flexDirection: 'column' };
+const colors = {
+  red1: 'rgb(220 38 38)',
+  green1: 'rgb(22 101 52)',
+};
 
 function chooseFrom<T>(choices: T[]): [T, number] {
   if (choices.length < 1) {
@@ -29,19 +39,21 @@ export function RandomChoice(): JSX.Element {
         onSubmit={(ev) => ev.preventDefault()}
       >
         <section style={{ ...colFlex }}>
-          <span>Choice count: {choiceNum}</span>
-          <span>Chosen: {choice}</span>
+          <Typography variant="body2">Choice count: {choiceNum}</Typography>
+          <Typography variant="h5" style={{ height: '3rem' }}>
+            Chosen: {choice}
+          </Typography>
         </section>
 
-        <section style={{ ...colFlex }}>
-          <button
-            type="button"
+        <section style={{ ...colFlex, minHeight: '300px' }}>
+          <Button
+            style={{ marginBottom: '2px' }}
             onClick={() => {
               setOptions(['', ...options]);
             }}
           >
-            +
-          </button>
+            <AddIcon />
+          </Button>
 
           {options.map((option, currentOptionIdx) => (
             <article
@@ -58,7 +70,7 @@ export function RandomChoice(): JSX.Element {
               >
                 {currentOptionIdx + 1}
               </label>
-              <input
+              <TextField
                 type="text"
                 id={`choice-${currentOptionIdx}`}
                 style={{ flexGrow: 1 }}
@@ -71,23 +83,22 @@ export function RandomChoice(): JSX.Element {
                   )
                 }
               />
-              <button
-                style={{ width: '2rem', padding: '0.5rem' }}
+              <IconButton
                 onClick={() =>
                   setOptions(
                     options.filter((_, idx2) => idx2 !== currentOptionIdx),
                   )
                 }
               >
-                X
-              </button>
+                <CloseIcon />
+              </IconButton>
             </article>
           ))}
         </section>
 
-        <section style={{ ...colFlex }}>
-          <button
-            type="button"
+        <section style={{ ...colFlex, gap: '1px' }}>
+          <Button
+            style={{ backgroundColor: colors.green1 }}
             onClick={() => {
               const nonEmptyOptions = options
                 .map((text, index) => ({ text: text.trim(), index }))
@@ -101,9 +112,9 @@ export function RandomChoice(): JSX.Element {
             }}
           >
             Make a choice!
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            style={{ backgroundColor: colors.red1 }}
             onClick={() => {
               setChoiceNum(0);
               setChoice(choicePlaceholderText);
@@ -111,7 +122,7 @@ export function RandomChoice(): JSX.Element {
             }}
           >
             Reset
-          </button>
+          </Button>
         </section>
       </form>
     </div>
