@@ -4,7 +4,7 @@ export function SiteHead({ title }: { title: string }) {
   return (
     <Head>
       <title>{title}</title>
-      <link rel="icon" href={`${process.env.basePath}/favicon.png`} />
+      <link rel="icon" href={`${process.env.basePath}/icons/favicon.png`} />
       <meta
         name="description"
         content={'Progressive web app to help you make choices.'}

@@ -40,3 +40,6 @@ yarn-error.log*
 **/yarn.lock
 **/package-lock.json
 **/.vscode
+**/workbox**
+**/sw.js
+**/sw.js.map
