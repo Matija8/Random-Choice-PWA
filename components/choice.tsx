@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode, useState } from 'react';
 
 const choicePlaceholderText = 'No choice yet made!';
-const getInitialOptions = () => ['', '', ''];
+const getInitialOptions = () => ['', ''];
 const colFlex: CSSProperties = { display: 'flex', flexDirection: 'column' };
 
 function chooseFrom<T>(choices: T[]): [T, number] {
@@ -78,12 +78,15 @@ export function RandomChoice(): JSX.Element {
           <button
             type="button"
             onClick={() => {
-              if (options.length < 1) {
-                setChoicInc("Can't choose from no options!");
+              const nonEmptyOptions = options
+                .map((text, index) => ({ text: text.trim(), index }))
+                .filter(({ text }) => Boolean(text));
+              if (nonEmptyOptions.length < 2) {
+                setChoicInc("Can't choose from less than 2 non-empty options!");
                 return;
               }
-              const [choice, idx] = chooseFrom(options);
-              setChoicInc(`${idx + 1} - ${choice}`);
+              const [choice] = chooseFrom(nonEmptyOptions);
+              setChoicInc(`${choice.index + 1} - ${choice.text}`);
             }}
           >
             Make a choice!
