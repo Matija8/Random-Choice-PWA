@@ -14,8 +14,8 @@ module.exports = withPWA({
     basePath,
   },
   basePath,
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-  },
+  // i18n: {
+  //   locales: ['en'],
+  //   defaultLocale: 'en',
+  // },
 });
