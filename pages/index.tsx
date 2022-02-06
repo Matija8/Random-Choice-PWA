@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <div className={``}>
       <SiteHead title="Random Choice App!" />
-      <main style={{ marginTop: '4rem' }}>
+      <main style={{ paddingTop: '4rem', height: '99vh' }}>
         <RandomChoice />
       </main>
     </div>

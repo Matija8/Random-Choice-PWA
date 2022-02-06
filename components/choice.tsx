@@ -13,6 +13,10 @@ const colors = {
   red1: 'rgb(220 38 38)',
   green1: 'rgb(22 101 52)',
 };
+const buttonPadding = '0.5rem';
+function choiceHtmlIdFromIdx(idx: number) {
+  return `choice-${idx}`;
+}
 
 function chooseFrom<T>(choices: T[]): [T, number] {
   if (choices.length < 1) {
@@ -33,98 +37,112 @@ export function RandomChoice(): JSX.Element {
   }
 
   return (
-    <div style={{ width: 'min(600px, 90vw)', margin: 'auto' }}>
-      <form
-        style={{ ...colFlex, gap: '2rem' }}
-        onSubmit={(ev) => ev.preventDefault()}
+    <form
+      style={{
+        ...colFlex,
+        width: 'min(600px, 90vw)',
+        margin: 'auto',
+        gap: '1rem',
+        height: '100%',
+      }}
+      onSubmit={(ev) => ev.preventDefault()}
+    >
+      <section style={{ ...colFlex }}>
+        <Typography variant="body2">Choice count: {choiceNum}</Typography>
+        <Typography variant="h5" style={{ height: '3rem' }}>
+          Chosen: {choice}
+        </Typography>
+      </section>
+
+      <Button
+        style={{ padding: buttonPadding }}
+        onClick={() => {
+          setOptions(['', ...options]);
+
+          Promise.resolve().then(() =>
+            document.getElementById(choiceHtmlIdFromIdx(0))?.focus?.(),
+          );
+        }}
       >
-        <section style={{ ...colFlex }}>
-          <Typography variant="body2">Choice count: {choiceNum}</Typography>
-          <Typography variant="h5" style={{ height: '3rem' }}>
-            Chosen: {choice}
-          </Typography>
-        </section>
+        <AddIcon />
+      </Button>
 
-        <section style={{ ...colFlex, minHeight: '300px' }}>
-          <Button
-            style={{ marginBottom: '2px' }}
-            onClick={() => {
-              setOptions(['', ...options]);
-            }}
+      <section
+        style={{
+          ...colFlex,
+          flexGrow: 1,
+          overflowY: 'auto',
+        }}
+      >
+        {options.map((option, currentOptionIdx) => (
+          <article
+            key={currentOptionIdx}
+            style={{ display: 'flex', width: '100%' }}
           >
-            <AddIcon />
-          </Button>
-
-          {options.map((option, currentOptionIdx) => (
-            <article
-              key={currentOptionIdx}
-              style={{ display: 'flex', width: '100%' }}
+            <label
+              htmlFor={choiceHtmlIdFromIdx(currentOptionIdx)}
+              style={{
+                width: '2rem',
+                display: 'flex',
+                alignItems: 'center',
+              }}
             >
-              <label
-                htmlFor={`choice-${currentOptionIdx}`}
-                style={{
-                  width: '2rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                {currentOptionIdx + 1}
-              </label>
-              <TextField
-                type="text"
-                id={`choice-${currentOptionIdx}`}
-                style={{ flexGrow: 1 }}
-                value={option}
-                onChange={(ev) =>
-                  setOptions(
-                    options.map((op, idx2) =>
-                      currentOptionIdx !== idx2 ? op : ev.target.value,
-                    ),
-                  )
-                }
-              />
-              <IconButton
-                onClick={() =>
-                  setOptions(
-                    options.filter((_, idx2) => idx2 !== currentOptionIdx),
-                  )
-                }
-              >
-                <CloseIcon />
-              </IconButton>
-            </article>
-          ))}
-        </section>
-
-        <section style={{ ...colFlex, gap: '1px' }}>
-          <Button
-            style={{ backgroundColor: colors.green1 }}
-            onClick={() => {
-              const nonEmptyOptions = options
-                .map((text, index) => ({ text: text.trim(), index }))
-                .filter(({ text }) => Boolean(text));
-              if (nonEmptyOptions.length < 2) {
-                setChoicInc("Can't choose from less than 2 non-empty options!");
-                return;
+              {currentOptionIdx + 1}
+            </label>
+            <TextField
+              type="text"
+              id={choiceHtmlIdFromIdx(currentOptionIdx)}
+              style={{ flexGrow: 1 }}
+              value={option}
+              onChange={(ev) =>
+                setOptions(
+                  options.map((op, idx2) =>
+                    currentOptionIdx !== idx2 ? op : ev.target.value,
+                  ),
+                )
               }
-              const [choice] = chooseFrom(nonEmptyOptions);
-              setChoicInc(`${choice.index + 1} - ${choice.text}`);
-            }}
-          >
-            Make a choice!
-          </Button>
-          <Button
-            style={{ backgroundColor: colors.red1 }}
-            onClick={() => {
-              setChoiceNum(0);
-              setChoice(choicePlaceholderText);
-              setOptions(getInitialOptions());
-            }}
-          >
-            Reset
-          </Button>
-        </section>
-      </form>
-    </div>
+            />
+            <IconButton
+              onClick={() =>
+                setOptions(
+                  options.filter((_, idx2) => idx2 !== currentOptionIdx),
+                )
+              }
+            >
+              <CloseIcon />
+            </IconButton>
+          </article>
+        ))}
+      </section>
+
+      <section style={{ ...colFlex, gap: '1px', marginBottom: '3rem' }}>
+        <Button
+          style={{ backgroundColor: colors.green1, padding: buttonPadding }}
+          onClick={() => {
+            const nonEmptyOptions = options
+              .map((text, index) => ({ text: text.trim(), index }))
+              .filter(({ text }) => Boolean(text));
+            if (nonEmptyOptions.length < 2) {
+              setChoicInc("Can't choose from less than 2 non-empty options!");
+              return;
+            }
+            const [choice] = chooseFrom(nonEmptyOptions);
+            setChoicInc(`${choice.index + 1} - ${choice.text}`);
+          }}
+        >
+          Make a choice!
+        </Button>
+        <Button
+          style={{ backgroundColor: colors.red1, padding: buttonPadding }}
+          onClick={() => {
+            setChoiceNum(0);
+            setChoice(choicePlaceholderText);
+            setOptions(getInitialOptions());
+          }}
+        >
+          Reset
+        </Button>
+      </section>
+    </form>
   );
 }
