@@ -48,9 +48,19 @@ export function RandomChoice(): JSX.Element {
               key={currentOptionIdx}
               style={{ display: 'flex', width: '100%' }}
             >
-              <span style={{ width: '2rem' }}>{currentOptionIdx + 1}</span>
+              <label
+                htmlFor={`choice-${currentOptionIdx}`}
+                style={{
+                  width: '2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {currentOptionIdx + 1}
+              </label>
               <input
                 type="text"
+                id={`choice-${currentOptionIdx}`}
                 style={{ flexGrow: 1 }}
                 value={option}
                 onChange={(ev) =>
@@ -62,6 +72,7 @@ export function RandomChoice(): JSX.Element {
                 }
               />
               <button
+                style={{ width: '2rem', padding: '0.5rem' }}
                 onClick={() =>
                   setOptions(
                     options.filter((_, idx2) => idx2 !== currentOptionIdx),
