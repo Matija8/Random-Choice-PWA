@@ -3,7 +3,7 @@
   "short_name": "R-Choice",
   "theme_color": "#ffffff",
   "background_color": "#004740",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/Random-Choice-PWA/",
   "start_url": "/Random-Choice-PWA/",
