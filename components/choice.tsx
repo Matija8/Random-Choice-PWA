@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 import { Button } from 'components/button';
 import { TextField } from 'components/textField';
 import IconButton from '@mui/material/IconButton';
@@ -36,6 +36,29 @@ export function RandomChoice(): JSX.Element {
     setChoice(text);
   }
 
+  function focusChoiceField(idx: number) {
+    const elem = document.getElementById(choiceHtmlIdFromIdx(idx));
+    elem?.focus?.();
+  }
+
+  useEffect(() => {
+    focusChoiceField(0);
+  }, []);
+
+  function addChoiceField() {
+    setOptions(['', ...options]);
+    focusChoiceField(0);
+  }
+
+  function focusNextChoiceField() {
+    const idx = options.findIndex((opt) => opt === '');
+    if (idx >= 0) {
+      focusChoiceField(idx);
+      return;
+    }
+    addChoiceField();
+  }
+
   return (
     <form
       style={{
@@ -56,13 +79,7 @@ export function RandomChoice(): JSX.Element {
 
       <Button
         style={{ padding: buttonPadding }}
-        onClick={() => {
-          setOptions(['', ...options]);
-
-          Promise.resolve().then(() =>
-            document.getElementById(choiceHtmlIdFromIdx(0))?.focus?.(),
-          );
-        }}
+        onClick={() => addChoiceField()}
       >
         <AddIcon />
       </Button>
@@ -101,8 +118,12 @@ export function RandomChoice(): JSX.Element {
                   ),
                 )
               }
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') focusNextChoiceField();
+              }}
             />
             <IconButton
+              tabIndex={-1}
               onClick={() =>
                 setOptions(
                   options.filter((_, idx2) => idx2 !== currentOptionIdx),
