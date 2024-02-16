@@ -9,9 +9,7 @@
     "lint": "next lint",
     "tsw": "tsc --watch",
     "export": "next build && next export",
-    "gh-add-nojekyll": "touch ./out/.nojekyll",
-    "gh-predeploy": "npm run export && npm run gh-add-nojekyll",
-    "gh-deploy": "npm run gh-predeploy && gh-pages -d out --dotfiles"
+    "gh-deploy": "npm run export && touch ./out/.nojekyll && gh-pages -d out --dotfiles"
   },
   "dependencies": {
     "next": "^14.1.0",
