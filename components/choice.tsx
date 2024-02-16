@@ -1,10 +1,7 @@
 import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 import { Button } from 'components/button';
-import { TextField } from 'components/textField';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import AddIcon from '@mui/icons-material/Add';
+import { TextField } from 'components/text-field';
+import { IconButton } from './button';
 
 const choicePlaceholderText = 'No choice yet made!';
 const getInitialOptions = () => ['', ''];
@@ -13,7 +10,7 @@ const colors = {
   red1: 'rgb(220 38 38)',
   green1: 'rgb(22 101 52)',
 };
-const buttonPadding = '0.5rem';
+const buttonPadding = '0.7rem';
 function choiceHtmlIdFromIdx(idx: number) {
   return `choice-${idx}`;
 }
@@ -71,17 +68,17 @@ export function RandomChoice(): JSX.Element {
       onSubmit={(ev) => ev.preventDefault()}
     >
       <section style={{ ...colFlex }}>
-        <Typography variant="body2">Choice count: {choiceNum}</Typography>
-        <Typography variant="h5" style={{ height: '3rem' }}>
+        <div>Choice count: {choiceNum}</div>
+        <div style={{ marginTop: 8, height: '3rem', fontSize: '22px' }}>
           Chosen: {choice}
-        </Typography>
+        </div>
       </section>
 
       <Button
-        style={{ padding: buttonPadding }}
+        style={{ padding: buttonPadding, fontSize: '1.3rem' }}
         onClick={() => addChoiceField()}
       >
-        <AddIcon />
+        +
       </Button>
 
       <section
@@ -130,25 +127,26 @@ export function RandomChoice(): JSX.Element {
                 )
               }
             >
-              <CloseIcon />
+              X
             </IconButton>
           </article>
         ))}
       </section>
 
-      <section style={{ ...colFlex, gap: '1px', marginBottom: '3rem' }}>
+      <section style={{ ...colFlex, gap: '16px', marginBottom: '3rem' }}>
         <Button
           style={{ backgroundColor: colors.green1, padding: buttonPadding }}
           onClick={() => {
-            const nonEmptyOptions = options
-              .map((text, index) => ({ text: text.trim(), index }))
-              .filter(({ text }) => Boolean(text));
-            if (nonEmptyOptions.length < 2) {
+            const trimmedOptions = options.map((text, index) => ({
+              text: text.trim(),
+              index,
+            }));
+            if (trimmedOptions.length < 2) {
               setChoicInc("Can't choose from less than 2 non-empty options!");
               return;
             }
-            const [choice] = chooseFrom(nonEmptyOptions);
-            setChoicInc(`${choice.index + 1} - ${choice.text}`);
+            const [choice] = chooseFrom(trimmedOptions);
+            setChoicInc(`#${choice.index + 1} - "${choice.text}"`);
           }}
         >
           Make a choice!

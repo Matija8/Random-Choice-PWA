@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require('next-pwa');
+const nextPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
+
+const withPWA = nextPWA({
+  dest: 'public',
+  runtimeCaching,
+});
 
 const basePath = '/Random-Choice-PWA';
 
 module.exports = withPWA({
-  pwa: {
-    dest: 'public',
-    runtimeCaching,
-  },
   reactStrictMode: true,
   env: {
     basePath,

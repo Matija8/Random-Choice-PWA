@@ -6,3 +6,4 @@
 
 - npm install && npm install -D
 - npm run dev
+- Open http://localhost:3000/Random-Choice-PWA
