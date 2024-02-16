@@ -3,7 +3,7 @@ import { Button } from 'components/button';
 import { TextField } from 'components/text-field';
 import { IconButton } from './button';
 
-const choicePlaceholderText = 'No choice yet made!';
+const choicePlaceholderText = '-';
 const getInitialOptions = () => ['', ''];
 const colFlex: CSSProperties = { display: 'flex', flexDirection: 'column' };
 const colors = {
@@ -69,8 +69,8 @@ export function RandomChoice(): JSX.Element {
     >
       <section style={{ ...colFlex }}>
         <div>Choice count: {choiceNum}</div>
-        <div style={{ marginTop: 8, height: '3rem', fontSize: '22px' }}>
-          Chosen: {choice}
+        <div style={{ marginBlock: 8, minHeight: '3rem', fontSize: '22px' }}>
+          Chosen: <br /> {choice}
         </div>
       </section>
 
@@ -142,7 +142,7 @@ export function RandomChoice(): JSX.Element {
               index,
             }));
             if (trimmedOptions.length < 2) {
-              setChoicInc("Can't choose from less than 2 non-empty options!");
+              setChoicInc("Can't choose from less than 2 options!");
               return;
             }
             const [choice] = chooseFrom(trimmedOptions);
